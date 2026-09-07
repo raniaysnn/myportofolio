@@ -55,7 +55,7 @@ h1, .brand {
 }
 
 .site-header nav a {
-    color: aqua;
+    color: rgb(14, 83, 83);
     text-decoration: none;
     font-size: 25px;
     font-weight: 600;
