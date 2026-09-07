@@ -55,9 +55,11 @@ h1, .brand {
 }
 
 .site-header nav a {
-    color: var(--ink);
+    color: aqua;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 25px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .hero {
@@ -174,6 +176,48 @@ h1, .brand {
     color: var(--text-muted);
     font-size: 0.85rem;
     border-top: 1px solid var(--line);
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.skill-card {
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.projects-card {
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s;
+}
+
+.projects-card:hover {
+    transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+    .skills-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 @media (max-width: 600px) {
