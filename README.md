@@ -2,7 +2,7 @@ Nama : Rania Yasin
 NPM : 2506621945
 Kelas : PBP-D
 ---------------------------------------
-###Tugas1
+### Tugas1
 
 1. Saat Anda merancang struktur HTML yang digunakan, apakah Anda menggunakan elemen semantik HTML5 seperti <section>, <article>, atau <aside>? Jika iya, bagaimana elemen tersebut membantu Anda dalam membuat static web? Jika tidak, mengapa tanpa elemen tersebut sudah memenuhi kebutuhan desain Anda?
 Ya, tetapi saya hanya menggunakan <article> dan <section> saja, saya juga menambahkan <nav> agar mempermudah meraih ke arah bagian Skill yang ingin dibaca. So far, elemen tersebut membantu. Tetapi sejauh ini saya masih mempelajari pembuatan Web jadi masih agak kagok dalam menulis code dan memahami syntaxnya.
@@ -17,3 +17,13 @@ Untuk selanjutnya, saya ingin membuat tampilan web portofolio saya menjadi lebih
 
  AI disclosure: Saya menggunakan chat gpt untuk menelurusi penggunaan <section>, <article>, atau <aside>, untuk pembuatan code saya pelajari lagi dan tulis sendiri. Tetapi saya juga membuka beberapa sumber lain seperti W3school, Youtube, dan PPT di Scele, namun untuk sekarang saya masih hanya mengimplementasikan basic knowledge yang saya dapatkan saja. Di lain sisi, saya mencoba juga sementara membuat web percobaan (bukan di folder myportofolio) untuk sekadar uji coba dan juga saya berusaha untuk lebih terbiasa dengan syntax dan logic HTML, CSS, server, pws, git, github. Saya membuat web dummy (uji coba) untuk saya pelajari setiap baris dan penggunaannya, untuk di tugas 2 nanti saya akan mencoba membuat web yang lebih interaktif dan responsif, saya sudah menonton beberapa channel youtube dan sambil mencoba menulis code ulang di web dummy nya sehingga nanti di tugas/tutorial selanjutnya bisa lebih paham dan mudah membuat webnya dan bisa saya implementasikan di dunia nyata nanti bukan hanya untuk sebatas matkul saja, seperti nanti untuk hackaton. (Saya juga sembari mengasah menggunakan Figma lebih lanjut terutama bidang UI/UX nya, mempelajari keterkaitan UI/UX menggunakan Figma yang nanti akan saya implementasikan di web web selanjutnya (Untuk sekarang progress saya lambat, saya masih berusaha memahami tiap baris code dan juga sumber dari Tutorial 00 dan 01 karena biasanya hanya membuat code lalu muncul output, sekarang harus mendeploy, desain, lalu terutama di bagian server etc yang masih membingungkan dan juga layouting)).
 
+### Tugas 3
+
+1. Jelaskan mengapa kita menggunakan ModelForm pada Django alih-alih membuat form HTML secara manual. Selain itu, jelaskan pula mengapa kita diwajibkan menambahkan {% csrf_token %} pada form tersebut!
+Menurut saya, `ModelForm` lebih praktis karena field form bisa mengikuti model yang sudah dibuat tanpa harus membuat semuanya manual. Django juga membantu validasi data dan penyimpanannya melalui `form.save()`. `{% csrf_token %}` wajib ada pada form `POST` untuk melindungi website dari request palsu yang dikirim dari situs lain.
+2. Pada Tutorial 03, kita membahas format data JSON dan XML. Mengapa JSON lebih disukai dalam pengembangan aplikasi web modern dibandingkan XML?
+JSON lebih sering digunakan karena bentuknya lebih ringkas dan mudah dibaca dibandingkan XML. JSON juga lebih mudah digunakan bersama JavaScript karena formatnya mirip object. XML memiliki banyak tag pembuka dan penutup, jadi biasanya lebih panjang dan terlihat lebih rumit.
+3. Jelaskan alur yang terjadi saat kamu menggunakan fungsi view untuk mengembalikan data portofoliomu dalam bentuk JSON. Mengapa kita perlu melakukan proses serialization pada model Django sebelum datanya dikembalikan?
+View mengambil data Experience dari database, lalu data tersebut diubah menjadi JSON menggunakan serialization. JSON itu dikembalikan melalui response dan dapat dipakai oleh halaman atau aplikasi lain. Serialization diperlukan karena object model Django tidak bisa langsung dikirim sebagai JSON.
+
+AI disclosure: Saya menggunakan ChatGPT untuk membantu memahami requirement, konsep ModelForm, JSON, dan memperbaiki error saat membuat fitur Experience. Saya tetap menjalankan command, testing, dan mencoba memahami kode yang digunakan sendiri. (Still learning tho)
