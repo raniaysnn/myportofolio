@@ -1,35 +1,21 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block meta %}
     <title>Experience - {{ name }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+{% endblock meta %}
 
-<body>
-    <header class="site-header">
-        <div class="container">
-            <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
-            <nav class="navbar">
-                <a href="{% url 'main:show_main' %}">Profile</a>
-                <a href="{% url 'main:show_experience' %}">Experience</a>
-                <a href="{% url 'main:show_main' %}#skills">Skills</a>
-                <a href="{% url 'main:show_main' %}#project">Projects</a>
-            </nav>
-        </div>
-    </header>
+{% block content %}
 
 <main>
     <section class="experience-section" id="experience">
         <div class="container">
             <p class="section-kicker">Perjalanan saya sejauh ini</p>
             <h1>Experience</h1>
+
+            <a href="{% url 'main:create_experience' %}" class="button project-add-button">
+                <span aria-hidden="true">+</span>
+                Tambah Experience
+            </a>
 
             <div class="experience-grid">
                 {% for experience in experience_list %}
@@ -47,6 +33,22 @@
                         {% else %}
                             <p class="experience-status">Selesai</p>
                         {% endif %}
+
+                                                <div class="project-actions">
+                            <a href="{% url 'main:update_experience' experience.id %}"
+                            class="button button-secondary">
+                                Edit
+                            </a>
+
+                            <form method="post"
+                                action="{% url 'main:delete_experience' experience.id %}"
+                                onsubmit="return confirm('Hapus experience ini?');">
+                                {% csrf_token %}
+                                <button type="submit" class="button button-danger">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
                     </article>
                 {% empty %}
                     <p class="empty-state">
@@ -58,10 +60,4 @@
     </section>
 </main>
 
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock content %}

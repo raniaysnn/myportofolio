@@ -56,3 +56,61 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
+
+class ExperienceDataDeliveryTest(TestCase):
+    def setUp(self):
+        self.experience = Experience.objects.create(
+            title="Asisten Lab",
+            description="Membantu kegiatan praktikum.",
+            category="organization",
+        )
+
+    def test_experience_json_returns_data(self):
+        response = self.client.get(reverse("main:get_experiences_json"))
+        data = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data[0]["fields"]["title"], "Asisten Lab")
+
+    def test_create_experience(self):
+        response = self.client.post(
+            reverse("main:create_experience"),
+            {
+                "title": "Panitia Acara",
+                "description": "Mengatur acara kampus.",
+                "category": "organization",
+                "thumbnail": "",
+                "ended_at": "",
+            },
+        )
+
+        self.assertRedirects(response, reverse("main:show_experience"))
+        self.assertTrue(
+            Experience.objects.filter(title="Panitia Acara").exists()
+        )
+
+    def test_update_experience(self):
+        response = self.client.post(
+            reverse("main:update_experience", args=[self.experience.id]),
+            {
+                "title": "Asisten Laboratorium",
+                "description": "Membantu kegiatan praktikum.",
+                "category": "organization",
+                "thumbnail": "",
+                "ended_at": "",
+            },
+        )
+
+        self.assertRedirects(response, reverse("main:show_experience"))
+        self.experience.refresh_from_db()
+        self.assertEqual(self.experience.title, "Asisten Laboratorium")
+
+    def test_delete_experience(self):
+        response = self.client.post(
+            reverse("main:delete_experience", args=[self.experience.id])
+        )
+
+        self.assertRedirects(response, reverse("main:show_experience"))
+        self.assertFalse(
+            Experience.objects.filter(id=self.experience.id).exists()
+        )
