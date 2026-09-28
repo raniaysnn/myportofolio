@@ -2,6 +2,7 @@ from django.urls import path
 
 from main.views import show_main, show_experience, show_project, show_projects, create_project, get_projects_json, delete_project, create_experience, get_experiences_json, delete_experience, update_experience
 from main.views import register, login_user, logout_user
+from main.views import toggle_star
 app_name = "main"
 
 urlpatterns = [
@@ -19,4 +20,9 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_user, name="login"),
     path("logout/", logout_user, name="logout"),
+    path(
+        "projects/<uuid:project_id>/star/",
+        toggle_star,
+        name="toggle_star",
+    ),
 ]
