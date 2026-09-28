@@ -1,6 +1,6 @@
 from django.urls import path
 
-from main.views import show_main, show_experience, show_project, show_projects, create_project, get_projects_json, delete_project, create_experience, get_experiences_json, delete_experience, update_experience
+from main.views import show_main, show_experience, show_project, show_projects, create_project, update_projects, get_projects_json, delete_project, create_experience, get_experiences_json, delete_experience, update_experience
 from main.views import register, login_user, logout_user
 from main.views import toggle_star
 app_name = "main"
@@ -11,6 +11,7 @@ urlpatterns = [
     path("project/", show_project, name="show_project"),
     path("project/search/", show_projects, name="show_projects"),
     path("project/add", create_project, name="create_project"),
+    path("project/<uuid:project_id>/edit/", update_projects, name="update_projects"),
     path("api/projects/", get_projects_json, name="get_projects_json"),
     path("project/<uuid:project_id>/delete/",delete_project,name="delete_project"),
     path("experience/add/", create_experience, name="create_experience"),

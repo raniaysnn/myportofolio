@@ -112,7 +112,7 @@ def show_project(request):
 
 @login_required(login_url="/login/") 
 def create_project(request):
-    if not request.user.is_superuser and not is_editor(request.user):
+    if not request.user.is_superuser:
         raise PermissionDenied
     
     form = ProjectForm(request.POST or None)
@@ -159,7 +159,7 @@ def show_projects(request):
 
 @login_required(login_url="/login/") 
 def delete_project(request, project_id):
-    if not request.user.is_superuser and not is_editor(request.user):
+    if not request.user.is_superuser:
         raise PermissionDenied
     
     project = get_object_or_404(Project, pk=project_id)
@@ -170,6 +170,33 @@ def delete_project(request, project_id):
         return redirect("main:show_project")
 
     return redirect("main:show_project")
+
+@login_required(login_url="/login/")
+def update_projects(request, project_id):
+    # UPDATE: boleh oleh superuser dan Editor
+    if not request.user.is_superuser and not is_editor(request.user):
+        raise PermissionDenied
+
+    project = get_object_or_404(Project, pk=project_id)
+
+    form = ProjectForm(
+        request.POST or None,
+        instance=project
+    )
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Proyek berhasil diperbarui!")
+        return redirect("main:show_project")
+
+    context = {
+        "name": "Rania Yasin",
+        "form": form,
+        "form_title": "Edit Project",
+        "submit_label": "Simpan Perubahan",
+    }
+
+    return render(request, "project_form.html", context)
 
 def register(request):
     form = UserCreationForm(request.POST or None)
