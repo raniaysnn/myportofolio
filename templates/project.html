@@ -17,7 +17,7 @@
                     <h1>Projects</h1>
                 </div>
 
-                {% if user.is_superuser or is_editor %}  {# Tambahkan baris ini #}
+                {% if user.is_superuser %}  {# Tambahkan baris ini #}
                 <a href="{% url 'main:create_project' %}"
                    class="button project-add-button">
                     <span aria-hidden="true">+</span>
@@ -57,11 +57,17 @@
                         <p>{{ project.description }}</p>
 
                         <div class="project-card-actions">
+
                             {% include "components/project_star.html" with project=project %}
 
-                            {% if user.is_superuser or is_editor %}  {# Tambahkan baris ini #}
+                            {% if user.is_superuser or is_editor %}
+                                <a href="{% url 'main:update_projects' project.id %}"
+                                class="button button-secondary">Edit</a>
+                            {% endif %}
+
+                            {% if user.is_superuser %}
                                 {% include "components/project_delete_modal.html" with project=project %}
-                            {% endif %}                 {# Tambahkan baris ini #}
+                            {% endif %}
 
                         </div>
 
