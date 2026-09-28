@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
@@ -12,6 +14,7 @@ from main.forms import ProjectForm, ExperienceForm # tugas3
 
 
 def show_main(request):
+    last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
     context = {
         "name": "Rania Yasin",
         "npm": "2506621945",
@@ -20,6 +23,7 @@ def show_main(request):
             "Mahasiswa Ilmu Komputer Universitas Indonesia yang tertarik "
             "pada pengembangan perangkat lunak dan pendidikan."
         ),
+        "last_login": last_login,
     }
     return render(request, "index.html", context)
 
@@ -159,7 +163,7 @@ def register(request):
         return redirect("main:login")
 
     context = {
-        "name": "Burhan",
+        "name": "Rena",
         "form": form,
     }
     return render(request, "register.html", context)
@@ -168,8 +172,11 @@ def login_user(request):
     form = AuthenticationForm(request, data=request.POST or None)
 
     if request.method == "POST" and form.is_valid():
-        login(request, form.get_user())
-        return redirect("main:show_main")
+        user = form.get_user()
+        login(request, user)
+        response = redirect("main:show_main")
+        response.set_cookie('last_login', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        return response
 
     context = {
         "name": "Rena",
@@ -179,4 +186,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect("main:show_main")
+    response = redirect("main:show_main")
+    response.delete_cookie('last_login')
+    return response
