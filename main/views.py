@@ -14,6 +14,9 @@ from main.models import Experience, Project
 
 from main.forms import ProjectForm, ExperienceForm # tugas3
 
+def is_editor(user):
+    return user.groups.filter(name="Editor").exists()
+
 
 def show_main(request):
     last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
@@ -101,6 +104,7 @@ def show_project(request):
     context = {
         'name': 'Rania Yasin',
         'project_list': Project.objects.all(),
+        'is_editor': request.user.is_authenticated and is_editor(request.user),
     }
 
     return render(request, "project.html", context)
@@ -108,8 +112,9 @@ def show_project(request):
 
 @login_required(login_url="/login/") 
 def create_project(request):
-    if not request.user.is_superuser:
+    if not request.user.is_superuser and not is_editor(request.user):
         raise PermissionDenied
+    
     form = ProjectForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -147,14 +152,16 @@ def show_projects(request):
         "name": "Rania Yasin",
         "project_list": projects,
         "title_query": title_query,
+        "is_editor": request.user.is_authenticated and is_editor(request.user),
     }
     return render(request, "project.html", context)
 
 
 @login_required(login_url="/login/") 
 def delete_project(request, project_id):
-    if not request.user.is_superuser:
-            raise PermissionDenied
+    if not request.user.is_superuser and not is_editor(request.user):
+        raise PermissionDenied
+    
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
