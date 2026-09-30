@@ -21,11 +21,12 @@
                 </div>
 
                 {% if user.is_superuser %}  {# Tambahkan baris ini #}
-                <a href="{% url 'main:create_project' %}"
-                   class="button project-add-button">
+                <button type="button"
+                        class="button project-add-button"
+                        popovertarget="add-project-modal">
                     <span aria-hidden="true">+</span>
                     Tambah Proyek
-                </a>
+                </button>
                 {% endif %}                 {# Tambahkan baris ini #}
             </div>
 
@@ -112,6 +113,10 @@
         </div>
     </section>
 </main>
+
+{% if user.is_superuser %}
+    {% include "components/project_form_modal.html" %}
+{% endif %}
 
     <script>
     // Konfigurasi
@@ -201,6 +206,10 @@
 
         articleElement.innerHTML = completeCardHtml;
         return articleElement;
+    }
+
+    function closeProjectModal() {
+        document.getElementById("add-project-modal").hidePopover();
     }
 
     // Fetch data project
