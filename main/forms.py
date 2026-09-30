@@ -9,12 +9,14 @@ class ProjectForm(ModelForm):
             "title",
             "description",
             "category",
+            "project_image_url"
         ]
 
         labels = {
             "title": "Nama Proyek",
             "description": "Deskripsi Proyek",
             "category": "Jenis Proyek",
+             "project_image_url": "URL Gambar",
         }
 
         widgets = {
@@ -33,6 +35,11 @@ class ProjectForm(ModelForm):
             "category": TextInput(
                 attrs={
                     "placeholder": "Lomba, Tugas Proyek, Proyek Mandiri",
+                }
+            ),
+            "project_image_url": URLInput(
+                attrs={
+                    "placeholder": "https://... (opsional)"
                 }
             ),
         }
