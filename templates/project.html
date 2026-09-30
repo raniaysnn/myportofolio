@@ -58,57 +58,6 @@
 
                 <!-- Project Grid -->
                 <div id="grid" class="experience-grid project-grid hide"></div>
-
-            <div class="project-container">
-
-                {% for project in project_list %}
-
-                    <article class="project-card">
-
-                        <span class="experience-category">
-                            {{ project.category }}
-                        </span>
-
-                        <h2>{{ project.title }}</h2>
-
-                        <p>{{ project.description }}</p>
-
-                        <div class="project-card-actions">
-
-                            {% include "components/project_star.html" with project=project %}
-
-                            {% if user.is_superuser or is_editor %}
-                                <a href="{% url 'main:update_projects' project.id %}"
-                                class="button button-secondary">Edit</a>
-                            {% endif %}
-
-                            {% if user.is_superuser %}
-                                {% include "components/project_delete_modal.html" with project=project %}
-                            {% endif %}
-
-                        </div>
-
-                    </article>
-
-                {% empty %}
-
-                    {% if title_query %}
-
-                        <p class="empty-state">
-                            Tidak ada proyek dengan nama tersebut.
-                        </p>
-
-                    {% else %}
-
-                        <p class="empty-state">
-                            Belum ada proyek yang ditambahkan.
-                        </p>
-
-                    {% endif %}
-
-                {% endfor %}
-
-            </div>
         </div>
     </section>
 </main>
@@ -143,6 +92,16 @@
         gridContainer.classList.toggle('hide', !showGrid);
     }
 
+    // Mengubah karakter khusus HTML menjadi entity agar ditampilkan sebagai teks
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
     function buildProjectCardElement(item) {
         const project = item.fields;
         const projectId = item.pk;
@@ -151,7 +110,7 @@
         articleElement.className = 'experience-card';
 
         const imageHtml = project.project_image_url
-            ? `<img src="${project.project_image_url}" alt="Gambar ${project.title}" class="project-image">`
+            ? `<img src="${escapeHtml(project.project_image_url)}" alt="Gambar ${escapeHtml(project.title)}" class="project-image">`
             : '';
 
         const deleteUrl = "{% url 'main:delete_project' '00000000-0000-0000-0000-000000000000' %}"
@@ -169,14 +128,14 @@
         const isStarredClass = project.is_starred ? " is-starred" : "";
         const starText = project.is_starred ? "Unstar" : "Star";
         const starTitle = project.star_count > 0
-            ? `Dibintangi oleh ${project.starred_by_names}`
+            ? `Dibintangi oleh ${escapeHtml(project.starred_by_names)}`
             : "Jadilah yang pertama memberi star";
 
         articleElement.innerHTML = `
             ${imageHtml}
-            <h2>${project.title}</h2>
-            <span class="experience-category">${project.category}</span>
-            <p class="experience-description">${project.description}</p>
+            <h2>${escapeHtml(project.title)}</h2>
+            <span class="experience-category">${escapeHtml(project.category)}</span>
+            <p class="experience-description">${escapeHtml(project.description)}</p>
             <div class="project-card-actions">
                 <div class="project-actions">
                     <form method="post" action="${starUrl}" class="star-form">
